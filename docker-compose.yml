@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: dev
+      # ASPNETCORE_HOSTINGSTARTUPASSEMBLIES: Microsoft.ApplicationInsights.Profiler.AspNetCore
+      # ASPNETCORE_HOSTINGSTARTUPASSEMBLIES: Microsoft.AspNetCore.ApplicationInsights.HostingStartup

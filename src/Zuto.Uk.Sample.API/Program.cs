@@ -21,6 +21,7 @@ namespace Zuto.Uk.Sample.API
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{Environment}.json", true)
                 .Build();
 
             var loggerConfiguration = new LoggerConfiguration()
@@ -32,14 +33,17 @@ namespace Zuto.Uk.Sample.API
                 .Enrich.FromLogContext()
                 //.Filter.ByExcluding("RequestMethod = 'GET' and RequestPath = '/api/health'")
                 .Enrich.With(new HostIpEnricher())
-                .Enrich.WithProperty("type", "sample-web-api")
-                .Enrich.WithProperty("environment", Environment)
+                .Enrich.WithProperty("Type", "sample-web-api")
+                .Enrich.WithProperty("Environment", Environment)
                  //.WriteTo.Console(new MessageTemplateTextFormatter(
                  //    "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}", null
                  //))
-                .WriteTo
-                .ApplicationInsightsEvents("f4d84735-e39e-45e8-bf87-c9e24021634f")
-                .WriteTo.Udp("192.168.50.2", 8901, new LogstashJsonFormatter(), 0, LogEventLevel.Information);
+                //.WriteTo
+                //.ApplicationInsightsEvents("f4d84735-e39e-45e8-bf87-c9e24021634f")
+                .WriteTo.Udp("192.168.50.2", 8901, new LogstashJsonFormatter
+                {
+                    FieldNameFormatting = FieldNameFormat.PascalCase
+                }, 0, LogEventLevel.Information);
 
             Log.Logger = loggerConfiguration.CreateLogger();
             //In case of errors within Serilog, it is possible to debug logs from Serilog using SelfLog.
@@ -69,6 +73,7 @@ namespace Zuto.Uk.Sample.API
                     s.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Sample API", Version = "v1"}); });
                 })
                 .UseIISIntegration()
+                .UseApplicationInsights("f4d84735-e39e-45e8-bf87-c9e24021634f")
                 .UseSerilog()
                 .UseStartup<Startup>();
     }
