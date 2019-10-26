@@ -7,5 +7,7 @@ namespace Zuto.Uk.Sample.API.Repositories
     public interface IJobsRepo
     {
         Task<List<JobsModel>> GetAll();
+        Task CreateJob(JobsModel model);
+        Task<JobsModel> GetJobsByPhoneNumber(string phoneNumber);
     }
 }
