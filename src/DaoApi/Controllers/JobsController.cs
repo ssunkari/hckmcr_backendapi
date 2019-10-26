@@ -28,9 +28,11 @@ namespace Zuto.Uk.Sample.API.Controllers
 
         [HttpGet]
         [Route("{phoneNumber}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetJobsByPhoneNumber(string phoneNumber)
+        public async Task<ActionResult<IEnumerable<JobsModel>>> GetJobsByPhoneNumber(string phoneNumber)
         {
-            var jobs = await _jobsRepo.GetAll();
+            var jobs = await _jobsRepo.GetJobsByPhoneNumber(phoneNumber);
+            if (jobs == null)
+                return NotFound();
             return Ok(jobs);
         }
 
