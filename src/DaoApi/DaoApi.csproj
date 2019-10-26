@@ -25,7 +25,6 @@
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="2.6.0" />
     <PackageReference Include="Serilog.Sinks.Udp" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-    <PackageReference Include="Zuto.Uk.Infrastructure.Logging" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>

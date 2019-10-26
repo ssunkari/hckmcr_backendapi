@@ -2,14 +2,9 @@
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Events;
 using Swashbuckle.AspNetCore.Swagger;
-using Zuto.Uk.Infrastructure.Logging;
-using Zuto.Uk.Infrastructure.Logging.Enrichers;
-
 namespace Zuto.Uk.Sample.API
 {
     public class Program
@@ -18,36 +13,6 @@ namespace Zuto.Uk.Sample.API
         public static int Main(string[] args)
         {
             var webHostBuilder = CreateWebHostBuilder(args);
-
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{Environment}.json", true)
-                .Build();
-
-            var loggerConfiguration = new LoggerConfiguration()
-                //Need below to disable default microsoft logging
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                //Load additional config from appsettings
-                .ReadFrom.Configuration(configuration)
-                .Enrich.FromLogContext()
-                //.Filter.ByExcluding("RequestMethod = 'GET' and RequestPath = '/api/health'")
-                .Enrich.With(new HostIpEnricher())
-                .Enrich.WithProperty("Type", "sample-web-api")
-                .Enrich.WithProperty("Environment", Environment)
-                 //.WriteTo.Console(new MessageTemplateTextFormatter(
-                 //    "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}", null
-                 //))
-                //.WriteTo
-                //.ApplicationInsightsEvents("f4d84735-e39e-45e8-bf87-c9e24021634f")
-                .WriteTo.Udp("192.168.50.2", 8901, new LogstashJsonFormatter
-                {
-                    FieldNameFormatting = FieldNameFormat.PascalCase
-                }, 0, LogEventLevel.Information);
-
-            Log.Logger = loggerConfiguration.CreateLogger();
-            //In case of errors within Serilog, it is possible to debug logs from Serilog using SelfLog.
-            Serilog.Debugging.SelfLog.Enable(Console.Error);
 
             try
             {
