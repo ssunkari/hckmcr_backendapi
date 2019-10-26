@@ -34,5 +34,12 @@ namespace Zuto.Uk.Sample.API.Controllers
             await _buddiesRepo.CreateUser(new BuddyModel(model));
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAllBuddies()
+        {
+            await _buddiesRepo.DeleteAllBuddies();
+            return Ok();
+        }
     }
 }

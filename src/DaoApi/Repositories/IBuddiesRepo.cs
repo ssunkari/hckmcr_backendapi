@@ -8,5 +8,6 @@ namespace Zuto.Uk.Sample.API.Repositories
     {
         Task<List<BuddyModel>> GetAllBuddies();
         Task CreateUser(BuddyModel model);
+        Task DeleteAllBuddies();
     }
 }

@@ -11,6 +11,7 @@ namespace Zuto.Uk.Sample.API.Repositories
     public class BuddiesRepo : IBuddiesRepo
     {
         private readonly IAmazonDynamoDB _dynamoDbClient;
+        private string _tableName = "hackmcr_buddies";
 
         public BuddiesRepo(IAmazonDynamoDB dynamoDbClient)
         {
@@ -21,7 +22,7 @@ namespace Zuto.Uk.Sample.API.Repositories
         {
             var request = new ScanRequest
             {
-                TableName = "hackmcr_buddies"
+                TableName = _tableName
             };
 
             var response = await _dynamoDbClient.ScanAsync(request);
@@ -32,7 +33,7 @@ namespace Zuto.Uk.Sample.API.Repositories
         {
             var putItemRequest = new PutItemRequest
             {
-                TableName = "hackmcr_buddies",
+                TableName = _tableName,
                 Item = new Dictionary<string, AttributeValue>
                 {
                     ["Id"] = new AttributeValue { S = Guid.NewGuid().ToString() },
@@ -46,6 +47,31 @@ namespace Zuto.Uk.Sample.API.Repositories
             };
 
             await _dynamoDbClient.PutItemAsync(putItemRequest);
+        }
+
+        public async Task DeleteAllBuddies()
+        {
+            var request = new ScanRequest
+            {
+                TableName = _tableName
+            };
+
+            var response = await _dynamoDbClient.ScanAsync(request);
+
+            var items = response.Items.Select(Map);
+            foreach (var item in items)
+            {
+                var deleteRequest = new DeleteItemRequest
+                {
+                    TableName = _tableName,
+                    Key = new Dictionary<string, AttributeValue>
+                    {
+                        ["Id"] = new AttributeValue { S = item.Id }
+                    }
+                };
+
+                await _dynamoDbClient.DeleteItemAsync(deleteRequest);
+            }
         }
 
         private BuddyModel Map(Dictionary<string, AttributeValue> result)
