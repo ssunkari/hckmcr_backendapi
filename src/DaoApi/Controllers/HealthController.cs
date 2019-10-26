@@ -14,19 +14,6 @@ namespace Zuto.Uk.Sample.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> Get()
         {
-            WebClient client = new WebClient();
-            string data = await client.DownloadStringTaskAsync(new Uri("https://jsonplaceholder.typicode.com/todos/1"));
-            Console.WriteLine(data);
-            try
-            {
-                throw new Exception();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-           
             return Ok("Healthy");
         }
     }
