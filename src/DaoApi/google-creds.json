@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hackmanchester20-1572108239094",
+  "private_key_id": "9eb70c62fc4a7a095a7ae423997e59801a05d082",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqzQKsgfG/BcQQ\nRlsjPUh7smoPnNAcO8AqaMLPopHwk3L87fZMBDAgYZXkM5wgNH19FwpKPf95rugZ\nAfk9Sqx5ZMrMxzP/VJfFuRJwUdcCcUT1vLINRiMsXywZVnLMeubRarMOaRPv1dxJ\nxi72IaPCxQN/ngZ/blCBfQxxOhbkPJHTMh7SkPrlJBgyPkM6kZK0/riPRT35BsZW\n6aZRdP26FNzYyG5HeAxRxoXkD7FOEF4I+iCHnDL4SDq3dHwtL5h7Ia8HGGQi2tGn\n7bP1HPzmiybXutTarR7OUXYYCtBmzAc4MJa0mxcheoY20Yn0pY2XRBZ3dKAW335t\nEVtDDow/AgMBAAECggEAGu1rof8cj0VH8K7pjb01e7btl1zdcc4OZkE85qzr0uCp\nghcRZlD0thjcdO1EDHm/XPobF7L9iirD5wloyLvImZzah31SWnX04D8PbqDLGSn6\nuWk7LZzkol62HkqC78Tii0UwnzF8FgAtP35HXMDXR2IgbT1ggIpHlpqR3G9QOOwn\nFfN1e8vbPV0zsnI3TRF3FKjrBgSx+o+CNZAiUKx4k/1WiDDKDJfqyzLgLpkBLTWP\nPOethu5VA6MwkXtrsrQ/ZungBNYqXtk7VD6BJl8GMWu+83ddPVlK8n7N31hszkUl\n6WotbeNrKJZaZVZrJdWmNKkv/CTZJNzQfvpcC/rFoQKBgQDwmgrg1ETSsAoF0kpw\nW0SUYdAlpht+Q0Cion5mfR1vNGXcXFxo99X+MBfxCb4kmBLQYZ5HxuGPL94S1vzA\nsVbxGT3i7qMYzz3TDl/MGDVKQuYXSrWgW0ysPaRj16rsILSZUS6jd3NbUxKDPMOv\nn4xFFRpEqEqJnH/7pIY1ugxgIQKBgQC1u14e5WJRtjEAWZp51EB7RKAfTYzGOWTQ\nGe4WVj6spMwdRJZZtWJ7/4XOPKqLwovpLTwt41VoDwYnpTwE/Fp/yOW+cTrFHhi3\n2YdMCQUzlH7COZFXvu3OKJX4U69cMqam/smFMcL11oU9mkiDQ5DZBVTN1SPJjXkZ\nyrkugRrgXwKBgG5D+qZNQflYyk8esBTMDyL9rNoERWdZRP8D/2/S+TFkzyXtgkBt\nDLqAqghCkczNkRnFEzgL8oWfx2PU+WMKIzE9gzpEaaTOHaRjWw37LjkJbc/Q4mpK\nTVpGqddEGMY8uufk573s2YZKDRruNzR+p1dls3MxuW9VtOXL4eIvkMphAoGAW6Ks\n5PtZRkaOEtUbtY63LPD/pIkgENvj36MTkKPQWpGGcsOg5H83t7qyp7mjbXGdxugO\nTj0xVZUtz1PcHc95erG8VvkVX0u7vwiq1kY+HzIjcKBCj3IwyyFf7aWU6PKJYe9b\nghQDcJ7I9LUVF0s8gJHVnyx4LStvAvhbw/1JphUCgYEAy+lgHKbZaOsiGleTJS7n\ns/uBRDeFhSk1wsYp5ipZL6ITu/AxVoCCHZEmet87Qlj1TPjQmIjxaV8+lARfN294\nUiWFO4GFlpS15z14hvPk06ePCpCBQbCm+NEXJUioc4NVi5BZ3kQnNNxxao634BXp\nvhdSvzrI+Orlq50K7A92u94=\n-----END PRIVATE KEY-----\n",
+  "client_email": "hckmcr-translate@hackmanchester20-1572108239094.iam.gserviceaccount.com",
+  "client_id": "109962660136740732524",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hckmcr-translate%40hackmanchester20-1572108239094.iam.gserviceaccount.com"
+}
