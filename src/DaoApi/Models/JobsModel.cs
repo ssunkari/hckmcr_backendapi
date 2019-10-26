@@ -1,4 +1,4 @@
-﻿namespace Zuto.Uk.Sample.API.Controllers
+﻿namespace Zuto.Uk.Sample.API.Models
 {
     public class JobsModel  
     {
