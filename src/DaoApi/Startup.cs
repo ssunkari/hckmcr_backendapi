@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.Runtime;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using CorrelationId;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog;
 using Serilog.Context;
+using Zuto.Uk.Sample.API.Ioc;
 
 namespace Zuto.Uk.Sample.API
 {
@@ -30,10 +33,15 @@ namespace Zuto.Uk.Sample.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            var awsOptions = Configuration.GetAWSOptions();
+            awsOptions.Credentials = new BasicAWSCredentials("AKIAJ3FS6FPDDXUKCUZA", "0A/yghnFv22CY26gWxKV6Tm006c4qJzViri2ZHzc");
+            services.AddDefaultAWSOptions(awsOptions);
+            services.AddAWSService<IAmazonDynamoDB>();
             services.AddCorrelationId();
             services.AddApplicationInsightsTelemetry();
             services.TryAddScoped<ICorrelationContextAccessor, CorrelationContextAccessor>();
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule<ServiceModule>();
             containerBuilder.Populate(services);
             var container = containerBuilder.Build();
             return new AutofacServiceProvider(container);
