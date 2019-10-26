@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using Zuto.Uk.Sample.API.Models;
 using Zuto.Uk.Sample.API.Models.Api;
 using Zuto.Uk.Sample.API.Repositories;
@@ -13,10 +12,12 @@ namespace Zuto.Uk.Sample.API.Controllers
     public class JobsController : ControllerBase
     {
         private readonly IJobsRepo _jobsRepo;
+        private readonly IJobScheduler _jobScheduler;
 
-        public JobsController(IJobsRepo jobsRepo)
+        public JobsController(IJobsRepo jobsRepo, IJobScheduler jobScheduler)
         {
             _jobsRepo = jobsRepo;
+            _jobScheduler = jobScheduler;
         }
 
         // GET api/health
@@ -42,7 +43,17 @@ namespace Zuto.Uk.Sample.API.Controllers
         [Route("seekhelp")]
         public async Task<ActionResult<IEnumerable<string>>> CreateJob([FromBody] JobApiRequestModel model)
         {
-            await _jobsRepo.CreateJob(model.Model());
+            var jobModel = model.Model();
+            await _jobsRepo.CreateJob(jobModel);
+            await _jobScheduler.ScheduleJob(jobModel);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("clear")]
+        public async Task<ActionResult<IEnumerable<string>>> DeleteJobs()
+        {
+            await _jobsRepo.DeleteAllJobs();
             return Ok();
         }
     }

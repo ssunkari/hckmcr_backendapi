@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
+using Amazon.SQS;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +38,7 @@ namespace Zuto.Uk.Sample.API
             awsOptions.Region = RegionEndpoint.EUWest2;
             services.AddDefaultAWSOptions(awsOptions);
             services.AddAWSService<IAmazonDynamoDB>();
+            services.AddAWSService<IAmazonSQS>();
             services.AddApplicationInsightsTelemetry();
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<ServiceModule>();

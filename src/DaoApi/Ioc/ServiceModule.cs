@@ -15,6 +15,8 @@ namespace Zuto.Uk.Sample.API.Ioc
         {
             builder.RegisterType<JobsRepo>().As<IJobsRepo>();
             builder.RegisterType<BuddiesRepo>().As<IBuddiesRepo>();
+            builder.RegisterType<BuddyFinder>().As<IBuddyFinder>();
+            builder.RegisterType<JobScheduler>().As<IJobScheduler>();
         }
     }
 }

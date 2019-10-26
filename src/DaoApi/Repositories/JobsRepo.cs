@@ -33,8 +33,7 @@ namespace Zuto.Uk.Sample.API.Repositories
         {
             Amazon.DynamoDBv2.Model.Condition cond = new Condition();
             cond.ComparisonOperator = "EQ";
-            cond.AttributeValueList = new List<AttributeValue>() { new AttributeValue { S = phoneNumber /*Media.ConvertToTimestamp(twoWeeksAgoDate).ToString()*/ } };
-           
+            cond.AttributeValueList = new List<AttributeValue>() { new AttributeValue { S = phoneNumber  } };
 
             try
             {
@@ -45,6 +44,31 @@ namespace Zuto.Uk.Sample.API.Repositories
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        public async Task DeleteAllJobs()
+        {
+            var request = new ScanRequest
+            {
+                TableName = TableName
+            };
+
+            var response = await _dynamoDbClient.ScanAsync(request);
+
+            var items = response.Items.Select(Map);
+            foreach (var item in items)
+            {
+                var deleteRequest = new DeleteItemRequest
+                {
+                    TableName = TableName,
+                    Key = new Dictionary<string, AttributeValue>
+                    {
+                        ["Id"] = new AttributeValue { S = item.Id }
+                    }
+                };
+
+                await _dynamoDbClient.DeleteItemAsync(deleteRequest);
             }
         }
 
