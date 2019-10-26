@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
+using Zuto.Uk.Sample.API.Controllers;
+using Zuto.Uk.Sample.API.Repositories;
 
-namespace Zuto.Uk.Sample.API.Controllers
+namespace Zuto.Uk.Sample.API.Models
 {
     public class JobsRepo :IJobsRepo
     {
@@ -30,7 +32,7 @@ namespace Zuto.Uk.Sample.API.Controllers
         {
             var job = new JobsModel
             {
-                Name = result["Id"].S,
+                Name = result["id"].S,
      
             };
 

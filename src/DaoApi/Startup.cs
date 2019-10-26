@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
 using Autofac;
@@ -34,7 +35,11 @@ namespace Zuto.Uk.Sample.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var awsOptions = Configuration.GetAWSOptions();
-            awsOptions.Credentials = new BasicAWSCredentials("AKIAJ3FS6FPDDXUKCUZA", "0A/yghnFv22CY26gWxKV6Tm006c4qJzViri2ZHzc");
+            awsOptions.Credentials = new BasicAWSCredentials("AKIA324BBMP6VDMKFK6Z", "cEFCHpDseed6stn/FgQAQkOJNv1IW7j/m6UDfOZm")
+            {
+                
+            };
+            awsOptions.Region = RegionEndpoint.EUWest2;
             services.AddDefaultAWSOptions(awsOptions);
             services.AddAWSService<IAmazonDynamoDB>();
             services.AddCorrelationId();
