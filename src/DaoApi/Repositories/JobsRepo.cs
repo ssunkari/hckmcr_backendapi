@@ -22,41 +22,48 @@ namespace Zuto.Uk.Sample.API.Repositories
         {
             var request = new ScanRequest
             {
-                TableName = "hackmcr_jobs"
+                TableName = TableName
             };
 
             var response = await _dynamoDbClient.ScanAsync(request);
             return response.Items.Select(Map).ToList();
         }
 
-        public async Task<JobsModel> GetJobsByPhoneNumber(string phoneNumber)
+        public async Task<List<JobsModel>> GetJobsByPhoneNumber(string phoneNumber)
         {
-            var request = new GetItemRequest
+            Amazon.DynamoDBv2.Model.Condition cond = new Condition();
+            cond.ComparisonOperator = "EQ";
+            cond.AttributeValueList = new List<AttributeValue>() { new AttributeValue { S = phoneNumber /*Media.ConvertToTimestamp(twoWeeksAgoDate).ToString()*/ } };
+           
+
+            try
             {
-                TableName = TableName,
-                Key = new Dictionary<string, AttributeValue> { { "MobileNumber", new AttributeValue { S = phoneNumber } } },
-            };
+                ScanResponse scRes = await _dynamoDbClient.ScanAsync(new ScanRequest { TableName = TableName, ScanFilter = new Dictionary<string, Condition>() { { "MobileNumber", cond } } });
 
-            var response = await _dynamoDbClient.GetItemAsync(request);
-
-            return response.Item.Any() ? Map(response.Item) : null;
-
+                return scRes.Items.Any() ? scRes.Items.Select(Map).OrderByDescending(x=>x.TimestampRequested).ToList() : null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public async Task CreateJob(JobsModel model)
         {
+            
             var putItemRequest = new PutItemRequest
             {
                 TableName = TableName,
                 Item = new Dictionary<string, AttributeValue>
                 {
+                    ["Id"] = new AttributeValue { S = model.Id },
                     ["MobileNumber"] = new AttributeValue { S = model.MobileNumber },
                     ["Name"] = new AttributeValue { S = model.Name },
                     ["Location"] = new AttributeValue { S = model.Location },
                     ["Lat"] = new AttributeValue { S = model.Lat },
                     ["Long"] = new AttributeValue { S = model.Long },
-                    ["TimestampRequested"] = new AttributeValue { S = model.TimestampRequested },
-                    ["TimestampRequiredFor"] = new AttributeValue { S = model.TimestampRequiredFor },
+                    ["TimestampRequested"] = new AttributeValue { S = model.TimestampRequested.ToString() },
+                    ["TimestampRequiredFor"] = new AttributeValue { S = model.TimestampRequiredFor.ToString() },
                     ["Message"] = new AttributeValue { S = model.Message },
                     ["TranslatedMessage"] = new AttributeValue { S = model.TranslatedMessage },
                     ["LanguageRequested"] = new AttributeValue { S = model.LanguageRequested },
@@ -72,13 +79,14 @@ namespace Zuto.Uk.Sample.API.Repositories
         {
             var job = new JobsModel
             {
+                Id = result["Id"].S,
                 Name = result["Name"].S,
                 MobileNumber = result["MobileNumber"].S,
                 Location = result["Location"].S,
                 Lat = result["Lat"].S,
                 Long = result["Long"].S,
-                TimestampRequested = result["TimestampRequested"].S,
-                TimestampRequiredFor = result["TimestampRequiredFor"].S,
+                TimestampRequested = DateTime.Parse(result["TimestampRequested"].S),
+                TimestampRequiredFor = DateTime.Parse(result["TimestampRequiredFor"].S),
                 Message = result["Message"].S,
                 TranslatedMessage = result["TranslatedMessage"].S,
                 LanguageRequested = result["LanguageRequested"].S,

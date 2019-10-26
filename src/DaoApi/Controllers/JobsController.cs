@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Zuto.Uk.Sample.API.Models;
 using Zuto.Uk.Sample.API.Models.Api;
 using Zuto.Uk.Sample.API.Repositories;
@@ -28,7 +29,7 @@ namespace Zuto.Uk.Sample.API.Controllers
 
         [HttpGet]
         [Route("{phoneNumber}")]
-        public async Task<ActionResult<IEnumerable<JobsModel>>> GetJobsByPhoneNumber(string phoneNumber)
+        public async Task<ActionResult<JobsModel>> GetJobsByPhoneNumber(string phoneNumber)
         {
             var jobs = await _jobsRepo.GetJobsByPhoneNumber(phoneNumber);
             if (jobs == null)

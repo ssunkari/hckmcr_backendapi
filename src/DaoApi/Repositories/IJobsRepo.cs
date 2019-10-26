@@ -8,6 +8,6 @@ namespace Zuto.Uk.Sample.API.Repositories
     {
         Task<List<JobsModel>> GetAll();
         Task CreateJob(JobsModel model);
-        Task<JobsModel> GetJobsByPhoneNumber(string phoneNumber);
+        Task<List<JobsModel>> GetJobsByPhoneNumber(string phoneNumber);
     }
 }

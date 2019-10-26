@@ -20,6 +20,7 @@ namespace Zuto.Uk.Sample.API.Models.Api
         {
             return new JobsModel
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = Name,
                 MobileNumber = MobileNumber,
                 Location = Location,
@@ -28,8 +29,8 @@ namespace Zuto.Uk.Sample.API.Models.Api
                 Message = Message,
                 TranslatedMessage = Message,
                 LanguageRequested = LanguageRequested,
-                TimestampRequested = TimestampRequested.ToString(),
-                TimestampRequiredFor = TimestampRequiredFor.ToString(),
+                TimestampRequested = TimestampRequested,
+                TimestampRequiredFor = TimestampRequiredFor,
                 Disabilities = Disabilities
             };
         }
