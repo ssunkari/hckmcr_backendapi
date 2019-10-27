@@ -17,6 +17,7 @@ namespace Zuto.Uk.Sample.API.Models
             Id = Guid.NewGuid().ToString();
             Profile = model.Profile;
             Rating = model.Rating;
+            ImageUrl = model.ImageUrl;
         }
 
         public string Profile { get; set; }
@@ -33,5 +34,6 @@ namespace Zuto.Uk.Sample.API.Models
         public string Id { get; set; }
         public string MobileNumber { get; set; }
         public string Rating { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

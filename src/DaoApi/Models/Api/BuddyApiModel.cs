@@ -21,5 +21,7 @@ namespace Zuto.Uk.Sample.API.Models.Api
 
         [Required]
         public string Rating { get; set; }
+        [Required]
+        public string ImageUrl { get; set; }
     }
 }

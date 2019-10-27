@@ -44,7 +44,8 @@ namespace Zuto.Uk.Sample.API.Repositories
                     ["Long"] = new AttributeValue { S = model.Long },
                     ["MobileNumber"] = new AttributeValue { S = model.MobileNumber },
                     ["Rating"] = new AttributeValue { S = model.Rating },
-                    ["Profile"] = new AttributeValue { S = model.Profile }
+                    ["Profile"] = new AttributeValue { S = model.Profile },
+                    ["ImageUrl"] = new AttributeValue { S = model.ImageUrl }
                 }
             };
 
@@ -106,7 +107,8 @@ namespace Zuto.Uk.Sample.API.Repositories
                 Long = result["Long"].S,
                 MobileNumber = result["MobileNumber"].S,
                 Rating = result["Rating"].S,
-                Profile = result["Profile"].S
+                Profile = result["Profile"].S,
+                ImageUrl = result["ImageUrl"].S
             };
             return job;
         }

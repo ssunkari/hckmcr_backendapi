@@ -19,6 +19,7 @@ namespace Zuto.Uk.Sample.API.Ioc
             builder.RegisterType<BuddyFinder>().As<IBuddyFinder>();
             builder.RegisterType<JobScheduler>().As<IJobScheduler>();
             builder.RegisterType<SendMessageToQueue>().As<ISendMessageToQueue>();
+            builder.RegisterType<TranslatorService>().As<ITranslatorService>();
         }
     }
 }

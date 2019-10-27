@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,13 +21,15 @@ namespace Zuto.Uk.Sample.API.Controllers
         private readonly IJobScheduler _jobScheduler;
         private readonly ISendMessageToQueue _sendMessageToQueue;
         private readonly IBuddiesRepo _buddiesRepo;
+        private readonly ITranslatorService _translatorService;
 
-        public JobsController(IJobsRepo jobsRepo, IJobScheduler jobScheduler, ISendMessageToQueue sendMessageToQueue, IBuddiesRepo buddiesRepo)
+        public JobsController(IJobsRepo jobsRepo, IJobScheduler jobScheduler, ISendMessageToQueue sendMessageToQueue, IBuddiesRepo buddiesRepo, ITranslatorService translatorService)
         {
             _jobsRepo = jobsRepo;
             _jobScheduler = jobScheduler;
             _sendMessageToQueue = sendMessageToQueue;
             _buddiesRepo = buddiesRepo;
+            _translatorService = translatorService;
         }
 
         // GET api/health
@@ -53,6 +56,17 @@ namespace Zuto.Uk.Sample.API.Controllers
         public async Task<ActionResult<IEnumerable<string>>> CreateJob([FromBody] JobApiRequestModel model)
         {
             var jobModel = model.Model();
+            try
+            {
+                if (jobModel.LanguageRequested != "en")
+                    jobModel.TranslatedMessage =
+                        _translatorService.TranslateText(jobModel.Message, jobModel.LanguageRequested, "en");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             await _jobsRepo.CreateJob(jobModel);
             await _jobScheduler.ScheduleJob(jobModel);
             return Ok();
@@ -98,6 +112,7 @@ namespace Zuto.Uk.Sample.API.Controllers
                     });
                     //Send Confirmation Text to Confirmed Helper
                     var msgTemplate = $"Hi {buddy.FirstName}, {requestorJobByIdMatch.Name} confirmed your acceptance and is looking forward to meet you at location {requestorJobByIdMatch.Location}";
+
                     await _sendMessageToQueue.Dispatch(buddy.MobileNumber, msgTemplate);
                     //Send Cancellation Text to Accepted Buddies, remove confirmed one from the list
                     var acceptedBuddiesExceptConfirmedBuddy = requestorJobByIdMatch.BuddiesAccepted?.Where(x => x != buddy.Id);
@@ -138,8 +153,13 @@ namespace Zuto.Uk.Sample.API.Controllers
                 if (requestor_response == "Accepted" && HasNotAcceptedAlready(requestorJobByIdMatch, buddy))
                 {
                     var msgTemplate =
-                        $"Your request for help is {requestor_response} by {buddy.FirstName} in your neighbourhood. {buddy.FirstName} has rating {buddy.Rating}, checkout {buddy.FirstName} profile {buddy.Profile}. Reply {requestorJobByIdMatch.Id.Substring(0, 4)}-{buddy.Id.Substring(0, 4)}-Confirm to confirm";
+                        $"Your request for help is {requestor_response} by {buddy.FirstName} in your neighbourhood. {buddy.FirstName} has rating {buddy.Rating}, checkout {buddy.FirstName} profile {buddy.Profile}?buddyId={buddy.Id}. Reply {requestorJobByIdMatch.Id.Substring(0, 4)}-{buddy.Id.Substring(0, 4)}-Confirm to confirm";
 
+                    if (requestorJobByIdMatch.LanguageRequested != "en")
+                    {
+                        msgTemplate = _translatorService.TranslateText(msgTemplate, "en",
+                            requestorJobByIdMatch.LanguageRequested);
+                    }
                     await _sendMessageToQueue.Dispatch(requestorJobByIdMatch.MobileNumber, msgTemplate);
 
                     var getCurrentBuddyAcceptedList = requestorJobByIdMatch.BuddiesAccepted ?? new List<string>();
