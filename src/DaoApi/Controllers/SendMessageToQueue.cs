@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json;
@@ -22,6 +23,12 @@ namespace DaoApi.Controllers
                 number = phoneNumber,
                 message = message
             })));
+        }
+
+        public async Task DispatchWithDelay(string phoneNumber, string message, int secondsDelay)
+        {
+            Thread.Sleep(secondsDelay*1000);
+            Dispatch(phoneNumber, message);
         }
     }
 }

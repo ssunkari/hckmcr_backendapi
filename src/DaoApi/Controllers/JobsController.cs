@@ -113,6 +113,17 @@ namespace Zuto.Uk.Sample.API.Controllers
                     //Send Confirmation Text to Confirmed Helper
                     var msgTemplate = $"Hi {buddy.FirstName}, {requestorJobByIdMatch.Name} confirmed your acceptance and is looking forward to meet you at location {requestorJobByIdMatch.Location}";
 
+                    //Send Review Text to Requestor.
+                    var reviewRequestTemplate =
+                        $"Hi {requestorJobByIdMatch.Name}, we were just wondering if you'd be happy to leave some feedback on your recent interaction with ${buddy.FirstName}?" +
+                        $"\n If you'd like to leave them some feedback, please just reply with Feedback-{requestorJobByIdMatch.Id.Substring(0, 4)}- followed by a number, 1 (Poor) to 5 (Excellent)." +
+                        $"\n E.g: Feedback-5674-5" +
+                        $"\n If you'd prefer not to leave any feedback, ignore this message, Thanks, Neighbourhood.";
+
+
+                    // "Consider await" - No. Bitch did I stutter?
+                    _sendMessageToQueue.DispatchWithDelay(requestorJobByIdMatch.MobileNumber, reviewRequestTemplate,30);
+
                     await _sendMessageToQueue.Dispatch(buddy.MobileNumber, msgTemplate);
                     //Send Cancellation Text to Accepted Buddies, remove confirmed one from the list
                     var acceptedBuddiesExceptConfirmedBuddy = requestorJobByIdMatch.BuddiesAccepted?.Where(x => x != buddy.Id);
@@ -138,6 +149,12 @@ namespace Zuto.Uk.Sample.API.Controllers
                         await _sendMessageToQueue.Dispatch(getBuddy.MobileNumber, msg);
                     }
                 }
+
+            } else if (model.Message.ToUpper().Contains("FEEDBACK"))
+            {
+                var job_identifier = model.Message.Split('-')[1];
+                var feedback_score = model.Message.Split('-')[2];
+                var requestorJobByIdMatch = (await _jobsRepo.GetJobsByIdMatch(job_identifier));
 
             }
             else
