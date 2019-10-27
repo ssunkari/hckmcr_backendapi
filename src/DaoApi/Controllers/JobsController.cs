@@ -170,7 +170,7 @@ namespace Zuto.Uk.Sample.API.Controllers
                 if (requestor_response == "Accepted" && HasNotAcceptedAlready(requestorJobByIdMatch, buddy))
                 {
                     var msgTemplate =
-                        $"Your request for help is {requestor_response} by {buddy.FirstName} in your neighbourhood. {buddy.FirstName} has rating {buddy.Rating}, checkout {buddy.FirstName} profile {buddy.Profile}?buddyId={buddy.Id}. Reply {requestorJobByIdMatch.Id.Substring(0, 4)}-{buddy.Id.Substring(0, 4)}-Confirm to confirm";
+                        $"Your request for help is {requestor_response} by {buddy.FirstName} in your neighbourhood. {buddy.FirstName} has rating {buddy.Rating}, checkout {buddy.FirstName} profile {buddy.Profile}?buddyId={buddy.Id}&userId={requestorJobByIdMatch.Id}. Reply {requestorJobByIdMatch.Id.Substring(0, 4)}-{buddy.Id.Substring(0, 4)}-Confirm to confirm";
 
                     if (requestorJobByIdMatch.LanguageRequested != "en")
                     {
