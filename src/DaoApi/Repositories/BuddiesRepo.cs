@@ -42,7 +42,9 @@ namespace Zuto.Uk.Sample.API.Repositories
                     ["Location"] = new AttributeValue { S = model.Location },
                     ["Lat"] = new AttributeValue { S = model.Lat },
                     ["Long"] = new AttributeValue { S = model.Long },
-                    ["MobileNumber"] = new AttributeValue { S = model.MobileNumber }
+                    ["MobileNumber"] = new AttributeValue { S = model.MobileNumber },
+                    ["Rating"] = new AttributeValue { S = model.Rating },
+                    ["Profile"] = new AttributeValue { S = model.Profile }
                 }
             };
 
@@ -74,6 +76,24 @@ namespace Zuto.Uk.Sample.API.Repositories
             }
         }
 
+        public async Task<BuddyModel> GetBuddyByIdMatch(string id)
+        {
+            Amazon.DynamoDBv2.Model.Condition cond = new Condition();
+            cond.ComparisonOperator = "CONTAINS";
+            cond.AttributeValueList = new List<AttributeValue>() { new AttributeValue { S = id } };
+
+            try
+            {
+                ScanResponse scRes = await _dynamoDbClient.ScanAsync(new ScanRequest { TableName = _tableName, ScanFilter = new Dictionary<string, Condition>() { { "Id", cond } } });
+
+                return scRes.Items.Any() ? scRes.Items.Select(Map).FirstOrDefault() : null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         private BuddyModel Map(Dictionary<string, AttributeValue> result)
         {
             var job = new BuddyModel
@@ -84,7 +104,9 @@ namespace Zuto.Uk.Sample.API.Repositories
                 Location = result["Location"].S,
                 Lat = result["Lat"].S,
                 Long = result["Long"].S,
-                MobileNumber = result["MobileNumber"].S
+                MobileNumber = result["MobileNumber"].S,
+                Rating = result["Rating"].S,
+                Profile = result["Profile"].S
             };
             return job;
         }

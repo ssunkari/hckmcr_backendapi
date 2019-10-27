@@ -35,6 +35,16 @@ namespace Zuto.Uk.Sample.API
             {
                 
             };
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("*",
+                    builder =>
+                    {
+                        builder.WithOrigins("*").AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
             awsOptions.Region = RegionEndpoint.EUWest2;
             services.AddDefaultAWSOptions(awsOptions);
             services.AddAWSService<IAmazonDynamoDB>();
@@ -55,7 +65,7 @@ namespace Zuto.Uk.Sample.API
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-
+            app.UseCors("*");
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

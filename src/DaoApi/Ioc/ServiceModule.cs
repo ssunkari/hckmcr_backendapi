@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using DaoApi.Controllers;
 using Zuto.Uk.Sample.API.Controllers;
 using Zuto.Uk.Sample.API.Models;
 using Zuto.Uk.Sample.API.Repositories;
@@ -17,6 +18,7 @@ namespace Zuto.Uk.Sample.API.Ioc
             builder.RegisterType<BuddiesRepo>().As<IBuddiesRepo>();
             builder.RegisterType<BuddyFinder>().As<IBuddyFinder>();
             builder.RegisterType<JobScheduler>().As<IJobScheduler>();
+            builder.RegisterType<SendMessageToQueue>().As<ISendMessageToQueue>();
         }
     }
 }

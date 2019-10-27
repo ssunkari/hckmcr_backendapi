@@ -16,5 +16,10 @@ namespace Zuto.Uk.Sample.API.Models.Api
         public string Long { get; set; }
         [Required]
         public string MobileNumber { get; set; }
+        [Required]
+        public string Profile { get; set; }
+
+        [Required]
+        public string Rating { get; set; }
     }
 }

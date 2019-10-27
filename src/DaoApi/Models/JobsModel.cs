@@ -17,5 +17,8 @@ namespace Zuto.Uk.Sample.API.Models
         public string TranslatedMessage { get; set; }
         public string LanguageRequested { get; set; }
         public List<string> Disabilities { get; set; }
+        public List<string> BuddiesAccepted { get; set; }
+        public bool JobConfirmed { get; set; }
+        public string JobConfirmedTo { get; set; }
     }
 }

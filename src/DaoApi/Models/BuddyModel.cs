@@ -1,4 +1,5 @@
 ﻿using System;
+using Amazon.DynamoDBv2.Model;
 using Zuto.Uk.Sample.API.Models.Api;
 
 namespace Zuto.Uk.Sample.API.Models
@@ -14,8 +15,11 @@ namespace Zuto.Uk.Sample.API.Models
             Location = model.Location;
             MobileNumber = model.MobileNumber;
             Id = Guid.NewGuid().ToString();
-
+            Profile = model.Profile;
+            Rating = model.Rating;
         }
+
+        public string Profile { get; set; }
 
         public BuddyModel()
         {
@@ -28,5 +32,6 @@ namespace Zuto.Uk.Sample.API.Models
         public string Long { get; set; }
         public string Id { get; set; }
         public string MobileNumber { get; set; }
+        public string Rating { get; set; }
     }
 }
